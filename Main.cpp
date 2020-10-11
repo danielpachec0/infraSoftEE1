@@ -56,11 +56,42 @@ void addMusic(Library& library){
     }
 }
 
+void deleteMusic(Library& library){
+    string musicIn, albumIn, artistIn;
+    cout << "Digite o nome da Musica:" << endl;
+    cin >> musicIn;
+    cout << "Digite o nome Do album:" << endl;
+    cin >> albumIn;
+    cout << "Digite o nome do Artista:" << endl;
+    cin >> artistIn;
+    int aux = library.deleteMusic(musicIn, albumIn, artistIn);
+    if(aux == 0){
+        aux = library.checkForEmptyAlbum(artistIn, albumIn);
+        if (aux == true){
+            library.checkForEmptyArtist(artistIn);
+        }else{
+            //album not empty
+            return;
+        }
+    }else if (aux == 1){
+        cout << "A musica nao foi encontrada" << endl;
+        return;
+    }else if(aux == 2){
+        cout << "O album nao foi encontrado" << endl;
+        return;
+    }else{
+        cout << "O artista nao foi encontrado" << endl;
+        return;
+    }
+}
+
 int main(){
     Library library;
     addMusic(library);
-    addMusic(library);
-    addMusic(library);
+    library.printMusics("ar1", "al1");
+    library.printArtists();
+    library.printAlbuns("ar1");
+    deleteMusic(library);
     library.printMusics("ar1", "al1");
     library.printArtists();
     library.printAlbuns("ar1");
