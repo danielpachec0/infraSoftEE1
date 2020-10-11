@@ -1,19 +1,33 @@
 using namespace std;
 
-struct music{
+struct Music{
     double duration;
     string name;
     string album;
-    string artist; 
+    string artist;
+//    Music(string name, string album, string artist){
+//        name = name;
+//        album = album;
+//        artist = artist;
+//    }
 };
 
-struct album{
+struct Album{
     string name;
-    vector<music> musics;
+    string artist;
+    vector<Music> musics;
+//    Album(string name, string artist){
+//        name = name;
+//        artist = artist;
+//        musics = vector<Music>(0);
+//    }
 };
 
-struct artist{
+struct Artist{
     string name;
-    vector<album> albuns;
+    vector<Album> albuns;
+//    Artist(string name){
+//        name = name;
+//        albuns = vector<Album>(0);
+//    }
 };
-
