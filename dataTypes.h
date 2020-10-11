@@ -8,14 +8,12 @@ struct music{
 };
 
 struct album{
-    double duration;
-    int tracks;
     string name;
     vector<music> musics;
 };
 
 struct artist{
     string name;
-    int albumNumber;
     vector<album> albuns;
 };
+
