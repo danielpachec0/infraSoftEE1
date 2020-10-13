@@ -209,4 +209,28 @@ public:
             cout << library[i].name <<endl;
         }
     }
+
+    vector<Music> getMusics(string artist, string album){
+        for (int i = 0; i < library.size(); ++i) {
+            if(artist == library[i].name){
+                for (int j = 0; j < library[i].albuns.size(); ++j) {
+                    if (album == library[i].albuns[j].name){
+                        return library[i].albuns[j].musics;
+                    }
+                }
+            }
+        }
+    }
+
+    vector<Album> getAlbuns(string artist){
+        for (int i = 0; i < library.size(); ++i) {
+            if(artist == library[i].name){
+                return library[i].albuns;
+            }
+        }
+    }
+
+    vector<Artist> getArtists(){
+        return library;
+    }
 };

@@ -2,6 +2,7 @@
 #include <vector>
 #include "dataTypes.h"
 #include "Library.h"
+#include "Player.h"
 
 using namespace std;
 
@@ -85,14 +86,124 @@ void deleteMusic(Library& library){
     }
 }
 
+void Interface(Library library, Player& player){
+    vector<Artist> artists;
+    vector<Album> albuns;
+    vector<Music> musics;
+    int estado = 0;
+    //--------------------------------
+    while(true){
+        for (int i = 0; i < 30; ++i) {
+            cout << endl;
+        }
+        switch (estado) {
+            case 0:
+                cout << "Player Home" << endl;
+                cout << "Para vizualizar os Artistas Digte 1" << endl;
+                cout << "Para vizualizar a lista de reproducao digite 2" << endl;
+                cout << "para adcionar uma musica na biblioteca digite 3" << endl;
+                cout << "para remover a ultima musica adcionada na fila de reporducao digite 4" << endl;
+                cin >> estado;
+                break;
+            case 1:
+                artists = library.getArtists();
+                cout << "Artists" << endl;
+                cout << "Digite 0 para voltar atela inicial" << endl;
+                cout << "Digite o numero do artistas para ver seus albuns" << endl;
+                for (int i = 0; i < artists.size(); ++i) {
+                    cout << i+1 << " - " << artists[i].name << endl;
+                }
+                cin >> estado;
+                if(estado == 0){
+                    break;
+                }else{
+                    albuns = library.getAlbuns(artists[estado-1].name);
+                    cout << artists[estado-1].name << " Albuns:" << endl;
+                    cout << "Digite 0 para voltar atela inicial" << endl;
+                    cout << "Digite o numero do album para ver as musicas" << endl;
+                    for (int i = 0; i < albuns.size(); ++i) {
+                        cout << i+1 << " - " << albuns[i].name << endl;
+                    }
+                    cin >> estado;
+                    if(estado == 0){
+                        break;
+                    }else{
+                        musics = library.getMusics(albuns[estado-1].artist, albuns[estado-1].name);
+                        cout << albuns[estado-1].artist << " " << albuns[estado-1].name << " musics:" << endl;
+                        cout << "Digite 0 para voltar atela inicial" << endl;
+                        cout << "Digite o numero da musica para adcionar a fila de reproducao" << endl;
+                        for (int i = 0; i < musics.size(); ++i) {
+                            cout << i+1 << " - " << musics[i].name << endl;
+                        }
+                        cin >> estado;
+                        if(estado == 0){
+                            break;
+                        }else{
+                            player.addToQueueEnd(musics[estado-1]);
+                        }
+                    }
+                }
+                estado = 0;
+                break;
+            case 2:
+                musics = player.getQueue();
+                if(musics.size() == 0){
+                    cout << "a Fila esta vazia" << endl;
+                }else{
+                    for (int i = 0; i < musics.size(); ++i) {
+                        if(i != 0){
+                            cout << "  ->  ";
+                        }
+                        cout << musics[i].name;
+                        if(i%10 == 0 && i != 0){
+                            cout << endl;
+                        }
+                    }
+                }
+
+                cout << endl;
+                do{
+                    cout << "Digite 0 para continuar" <<endl;
+                    cin >> estado;
+                }while (estado !=0);
+                break;
+            case 3:
+                addMusic(library);
+                do{
+                    cout << "Digite 0 para continuar" <<endl;
+                    cin >> estado;
+                }while (estado !=0);
+                estado = 0;
+                break;
+            case 4:
+                if(player.removeFromQueueEnd()){
+                    cout<< "Removida!" << endl;
+                }else{
+                    cout << "a Fila esta vazia" << endl;
+                }
+                do{
+                    cout << "Digite 0 para continuar" <<endl;
+                    cin >> estado;
+                }while (estado !=0);
+                break;
+            default:
+                return;
+        }
+    }
+
+}
+
+
 int main(){
     Library library;
+    Player player;
+    //estado == 0 -> home
+    //estado == 1 -> artistas
+    //estado == 2 -> albuns - todo
+    //estado == 3 -> musicas - todo
+    //player == 4 -> Lista de reproducao
     addMusic(library);
-    library.printMusics("ar1", "al1");
-    library.printArtists();
-    library.printAlbuns("ar1");
-    deleteMusic(library);
-    library.printMusics("ar1", "al1");
-    library.printArtists();
-    library.printAlbuns("ar1");
+    addMusic(library);
+    addMusic(library);
+    Interface( library, player);
 }
